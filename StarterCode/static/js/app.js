@@ -157,12 +157,20 @@ function buildMetadata(sample) {
 }
 
 
-
-/* 6. Update all the plots when a new sample is selected. Additionally, you are welcome to 
+/* 
+create a event listner function
+the function has a name
+<select id="selDataset" onchange="optionChanged(this.value)"></select>
+6. Update all the plots when a new sample is selected. Additionally, you are welcome to 
 create any layout that you would like for your dashboard. */
+function optionChanged(newSample){
+    
+    //buildcharts
+    buildCharts(newSample);
 
-
-
+    //update the metadata Panel
+    buildMetadata(newSample);
+};
 
 /* 7. Deploy your app to a free static page hosting service, such as GitHub Pages. 
 Submit the links to your deployment and your GitHub repo. 
@@ -186,12 +194,14 @@ function initialize(){
             // start with the pulldownSelect and chain
             pulldownSelect.append("option").text(sampleNames[index]).property("value", sampleNames[index])
         };
-
+    
+    let firstSample = sampleNames[0];
+    
     //call buildCharts function
-    buildCharts(940);
+    buildCharts(firstSample);
 
     //call buildMetadata(sample)
-    buildMetadata(940);
+    buildMetadata(firstSample);
 
     //Note Data is not avalible below this point
     });
