@@ -70,6 +70,7 @@ function buildCharts(sample){
                 let traceBubble = {
                     x: otu_ids,
                     y: sample_values, 
+                    text: otu_labels,
                     mode: 'markers',
                     marker: {
                         size: sample_values,
@@ -84,7 +85,8 @@ function buildCharts(sample){
                     title: "Bacteria in Sample",
                     showlegend: false,
                     xaxis: {title: "OTU ID"},
-                    yaxis: {title: "Sample Values"}
+                    yaxis: {title: "Sample Values"},
+                    hovermode: "closest"
                 }
 
                 //build bubble chart in <div id="bubble"></div>
@@ -151,7 +153,10 @@ function buildMetadata(sample) {
         // iterate over each key value pair in metadataResult and append to the metadataPanel
         for (key in metadataResult){
             metadataPanel.append("h5").text(`${key.toUpperCase()}: ${metadataResult[key]}`);
-        }
+        };
+
+        //call buildGauge function and pass
+        buildGauge(metadataResult.wfreq);
 
     })
 }
