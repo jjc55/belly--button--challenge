@@ -115,13 +115,46 @@ function buildCharts(sample){
 
 };
 
+/* 4. Display the sample metadata, i.e., an individual's demographic information. 
+5. Display each key-value pair from the metadata JSON object somewhere on the page. */
 
-/* 4. Display the sample metadata, i.e., an individual's demographic information. */
+function buildMetadata(sample) {
+    d3.json(sample_data).then(function (data){
+        console.log("This is sample data")
+        console.log(data);
 
+        let metadata = data.metadata;
 
+        // view in console
+        console.log("This is metadata.")
+        console.log(metadata);
 
-/* 5. Display each key-value pair from the metadata JSON object somewhere on the page. */
+        //filter samples for the given sample (i.e. 940)
+        let metadataArray = metadata.filter(metadataObject => metadataObject.id == sample);
+        console.log(metadataArray);
 
+        //unpack the object using indexing
+        let metadataResult = metadataArray[0];
+        //view in console
+        console.log("This is metadataResult.")
+        console.log(metadataResult);
+
+        //use d3.select() to get <div id="sample-metadata" class="panel-body"></div> from index.html
+        //when using id to select "#sample-metadata"
+        //assign to a variable
+        let metadataPanel = d3.select("#sample-metadata")
+
+        //need to wipe clean the metadataPanel
+        //using html("")
+        metadataPanel.html("");
+
+        // iterate over each key value pair in metadataResult and append to the metadataPanel
+        for (key in metadataResult){
+            metadataPanel.append("h5").text(`${key.toUpperCase()}: ${metadataResult[key]}`);
+        }
+
+    })
+}
 
 
 
@@ -138,7 +171,30 @@ Ensure that your repository has regular commits and a thorough README.md file */
 
 //Create an initialize function called initialize
 function initialize(){
+    d3.json(sample_data).then(function (data) {
+        let sampleNames = data.names;
+        console.log(sampleNames);
+    
+        //populate pulldown menu
+        //ref MDN for the select statement
+        //add option, value, text for each sampleName
+        //use d3.select to get <select id="selDataset" onchange="optionChanged(this.value)"></select>
+        let pulldownSelect = d3.select("#selDataset");
+
+        //iterate over each name in sampleNames add option,value,text for each sampleName
+        for (let index=0; index<sampleNames.length; index++){
+            // start with the pulldownSelect and chain
+            pulldownSelect.append("option").text(sampleNames[index]).property("value", sampleNames[index])
+        };
+
+    //call buildCharts function
     buildCharts(940);
+
+    //call buildMetadata(sample)
+    buildMetadata(940);
+
+    //Note Data is not avalible below this point
+    });
 };
 
 initialize();
